@@ -54,18 +54,20 @@ Criação dos arquivos Python que compõem a arquitetura em camadas da aplicaç�
 
 A aplicação segue uma arquitetura em camadas:
 -schemas/ ou schemas.py: Definição de modelos Pydantic (BaseModel, Field) para validação estrita do JSON recebido no corpo da requisição e do JSON retornado.
+    -Esquemas de Entrada e Saída: Classes herdadas de BaseModel em módulo separado (schemas.py), definindo explicitamente o contrato de dados que a API aceita e o contrato que ela devolve.
+    -Uso de Tipagem e Restrições (Field): tipos estáticos adequados e regras mínimas de negócio nos atributos.
 -services/ ou services.py: Módulo responsável por carregar o modelo serializado e executar a inferência matemática, desacoplando regras de negócio do protocolo HTTP.
 -routers/ ou routers.py: Módulos de rota usando APIRouter agrupando os endpoints de negócio.
 -main.py: Ponto de entrada da aplicação, inclusão dos roteadores e gerenciamento do ciclo de vida.
+
 
 ## Fase 3: Ciclo de Vida e Inicialização Otimizada (Lifespan)
 Atualização dos arquivos `main.py` e `routers.py` para implementar o padrão `@asynccontextmanager` para que o modelo seja carregado somente na inicialização e compartilhado por meio de `request.app.state.model`.
 OBS.: É terminantemente proibido ler o disco ou recarregar o arquivo .joblib/.pkl dentro da função da rota de predição a cada requisição HTTP recebida.
 
 ## Fase 4: Modelagem e Validação Estrita de Dados (Pydantic)
-Esquemas de Entrada e Saída: Criar classes herdadas de BaseModel em módulo separado (schemas.py), definindo explicitamente o contrato de dados que a API aceita e o contrato que ela devolve.
-Uso de Tipagem e Restrições (Field): Configurar tipos estáticos adequados e regras mínimas de negócio nos atributos (ex.: faixas de valores com ge, le, gt, limites de tamanho de texto e descrições).
-Prevenção de Dados Inválidos: Garantir que o envio de tipos incorretos (ex.: texto em campos numéricos ou valores fora dos limites) seja interceptado automaticamente pelo Pydantic, gerando respostas com status HTTP 422 Unprocessable Entity antes de repassar os dados para o modelo preditivo.
+
+-Prevenção de Dados Inválidos: Garantir que o envio de tipos incorretos (ex.: texto em campos numéricos ou valores fora dos limites) seja interceptado automaticamente pelo Pydantic, gerando respostas com status HTTP 422 Unprocessable Entity antes de repassar os dados para o modelo preditivo.
 
 ## Fase 5: Implementação de Endpoints e Tratamento de Erros (FastAPI & HTTP)
 Endpoint de Monitoramento (GET /health): Rota de checagem de integridade operacional que deve responder com status HTTP 200 OK, informando se o serviço está ativo e se o modelo de Machine Learning reside corretamente na memória RAM.
