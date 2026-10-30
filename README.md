@@ -44,30 +44,31 @@ Bibliotecas do arquivo "requirements.txt" instaladas via Terminal com comando pi
 
 ## Fase 1: Preparação e Serialização do Modelo (Pipeline Offline)
 
--Download via urllib do dataset no repositório UCI e descompactação para uso.
--Treino do modelo preditivo escolhido, garantindo a divisão entre dados de treino, validação e teste e os devidos tratamentos de pré-processamento (imputação de nulos, codificação categórica e escalonamento).
--Serialização do Artefato: pipeline salvo em um arquivo binário dedicado (joblib) dentro de uma pasta apropriada do projeto 
-- Relatório de Métricas
+* Download via urllib do dataset no repositório UCI e descompactação para uso.
+* Treino do modelo preditivo escolhido, garantindo a divisão entre dados de treino, validação e teste e os devidos tratamentos de pré-processamento (imputação de nulos, codificação categórica e escalonamento).
+* Serialização do Artefato: pipeline salvo em um arquivo binário dedicado (joblib) dentro de uma pasta apropriada do projeto 
+* Relatório de Métricas
 
 ## Fase 2: Estrutura Modular da API FastAPI
 Criação dos arquivos Python que compõem a arquitetura em camadas da aplicação Web
 
 A aplicação segue uma arquitetura em camadas:
--schemas/ ou schemas.py: Definição de modelos Pydantic (BaseModel, Field) para validação estrita do JSON recebido no corpo da requisição e do JSON retornado.
-    -Esquemas de Entrada e Saída: Classes herdadas de BaseModel em módulo separado (schemas.py), definindo explicitamente o contrato de dados que a API aceita e o contrato que ela devolve.
-    -Uso de Tipagem e Restrições (Field): tipos estáticos adequados e regras mínimas de negócio nos atributos.
--services/ ou services.py: Módulo responsável por carregar o modelo serializado e executar a inferência matemática, desacoplando regras de negócio do protocolo HTTP.
--routers/ ou routers.py: Módulos de rota usando APIRouter agrupando os endpoints de negócio.
--main.py: Ponto de entrada da aplicação, inclusão dos roteadores e gerenciamento do ciclo de vida.
+* schemas/ ou schemas.py: Definição de modelos Pydantic (BaseModel, Field) para validação estrita do JSON recebido no corpo da requisição e do JSON retornado.
+    * Esquemas de Entrada e Saída: Classes herdadas de BaseModel em módulo separado (schemas.py), definindo explicitamente o contrato de dados que a API aceita e o contrato que ela devolve.
+    * Uso de Tipagem e Restrições (Field): tipos estáticos adequados e regras mínimas de negócio nos atributos.
+* services/ ou services.py: Módulo responsável por carregar o modelo serializado e executar a inferência matemática, desacoplando regras de negócio do protocolo HTTP.
+* routers/ ou routers.py: Módulos de rota usando APIRouter agrupando os endpoints de negócio.
+* main.py: Ponto de entrada da aplicação, inclusão dos roteadores e gerenciamento do ciclo de vida.
 
 
 ## Fase 3: Ciclo de Vida e Inicialização Otimizada (Lifespan)
-Atualização dos arquivos `main.py` e `routers.py` para implementar o padrão `@asynccontextmanager` para que o modelo seja carregado somente na inicialização e compartilhado por meio de `request.app.state.model`.
+* Atualização dos arquivos `main.py` e `routers.py` para implementar o padrão `@asynccontextmanager` para que o modelo seja carregado somente na inicialização e compartilhado por meio de `request.app.state.model`.
+
 OBS.: É terminantemente proibido ler o disco ou recarregar o arquivo .joblib/.pkl dentro da função da rota de predição a cada requisição HTTP recebida.
 
 ## Fase 4: Modelagem e Validação Estrita de Dados (Pydantic)
 
--Prevenção de Dados Inválidos: Garantir que o envio de tipos incorretos (ex.: texto em campos numéricos ou valores fora dos limites) seja interceptado automaticamente pelo Pydantic, gerando respostas com status HTTP 422 Unprocessable Entity antes de repassar os dados para o modelo preditivo.
+ * Prevenção de Dados Inválidos: Garantir que o envio de tipos incorretos (ex.: texto em campos numéricos ou valores fora dos limites) seja interceptado automaticamente pelo Pydantic, gerando respostas com status HTTP 422 Unprocessable Entity antes de repassar os dados para o modelo preditivo.
 
 ## Fase 5: Implementação de Endpoints e Tratamento de Erros (FastAPI & HTTP)
 Demonstrando o uso do TestClient para simular requisições HTTP reais nos endpoints /api/v1/health e /api/v1/predict:
@@ -76,4 +77,4 @@ Demonstrando o uso do TestClient para simular requisições HTTP reais nos endpo
 * Endpoint de Inferência (POST /predict ou /v1/predict): Rota que consome o esquema de entrada validado, invoca a camada de serviço/inferência e retorna a predição no formato do esquema de saída configurado com status HTTP 200 OK.
 * Semântica e Tratamento de Exceções HTTP: Mapeamento com retorne de status codes apropriados (200 OK, 400 Bad Request, 422 Unprocessable Entity ou 500 Internal Server Error), evitando que a API caia (crash) ou retorne erros sem tratamento ao usuário.
  
-# Links das Evidências: Link do vídeo no Google Drive.**
+# Link do vídeo no Google Drive: 
