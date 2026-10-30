@@ -1,19 +1,19 @@
 # Projeto-Avaliativo-Final---M-dulo-2
 Projeto Avaliativo Final - Módulo 2
 
-### Projeto: Classificação de Niveis de Obesidade para Mulheres 40+
+# Projeto: Classificação de Niveis de Obesidade para Mulheres 40+
 Este notebook guiará o desenvolvimento, modularização e documentação de uma API Web completa utilizando FastAPI para disponibilizar um modelo preditivo treinado.
 
 ## Escolha do Modelo e Dataset
 Para garantir que a validação via Pydantic e os endpoints da API funcionem de forma clara, e de acordo com interesses pessoais, escolhi o dataset "Estimation of Obesity Levels Based on Eating Habits and Physical Condition".
 
-# Dataset: "Estimation of Obesity Levels Based on Eating Habits and Physical Condition". Utilizando uma estratégia de filtragem para o público feminino 40+
+### Dataset: "Estimation of Obesity Levels Based on Eating Habits and Physical Condition". Utilizando uma estratégia de filtragem para o público feminino 40+
 
-# Objetivo: Classificar o nível de obesidade de um indivíduo (peso insuficiente, peso normal, sobrepeso, obesidade I, II ou III).
+### Objetivo: Classificar o nível de obesidade de um indivíduo (peso insuficiente, peso normal, sobrepeso, obesidade I, II ou III).
 
-# Variáveis de Entrada: Hábitos alimentares (consumo de vegetais, número de refeições, ingestão de água) e condição física (atividade física, tempo de uso de telas, idade, histórico familiar).
+### Variáveis de Entrada: Hábitos alimentares (consumo de vegetais, número de refeições, ingestão de água) e condição física (atividade física, tempo de uso de telas, idade, histórico familiar).
 
-# Vantagem para a API: Excelente para criar uma API de recomendação de saúde ou estilo de vida, exigindo uma validação bem rica com Pydantic para strings, números e enums (como frequências de hábitos).
+### Vantagem para a API: Excelente para criar uma API de recomendação de saúde ou estilo de vida, exigindo uma validação bem rica com Pydantic para strings, números e enums (como frequências de hábitos).
 
 ## Tecnologias Utilizadas: 
 Version: 1.144.0 (user setup)
@@ -36,7 +36,7 @@ Venv criado pela barra " quick access" no vscode
 
 Bibliotecas do arquivo "requirements.txt" instaladas via Terminal com comando pip install
 
-### Pipeline construído por etapas conforme sequência abaixo:
+# Pipeline construído por etapas conforme sequência abaixo:
 
 ## Fase 1: Preparação e Serialização do Modelo (Pipeline Offline)
 
@@ -48,15 +48,13 @@ Bibliotecas do arquivo "requirements.txt" instaladas via Terminal com comando pi
 ## Fase 2: Estrutura Modular da API FastAPI
 Criação dos arquivos Python que compõem a arquitetura em camadas da aplicação Web
 
-A aplicação não pode ser um arquivo único com todo o código misturado. Deve seguir uma arquitetura em camadas:
-schemas/ ou schemas.py: Definição de modelos Pydantic (BaseModel, Field) para validação estrita do JSON recebido no corpo da requisição e do JSON retornado.
-services/ ou services.py: Módulo responsável por carregar o modelo serializado e executar a inferência matemática, desacoplando regras de negócio do protocolo HTTP.
-routers/ ou routers.py: Módulos de rota usando APIRouter agrupando os endpoints de negócio.
-main.py: Ponto de entrada da aplicação, inclusão dos roteadores e gerenciamento do ciclo de vida.
+A aplicação segue uma arquitetura em camadas:
+-schemas/ ou schemas.py: Definição de modelos Pydantic (BaseModel, Field) para validação estrita do JSON recebido no corpo da requisição e do JSON retornado.
+-services/ ou services.py: Módulo responsável por carregar o modelo serializado e executar a inferência matemática, desacoplando regras de negócio do protocolo HTTP.
+-routers/ ou routers.py: Módulos de rota usando APIRouter agrupando os endpoints de negócio.
+-main.py: Ponto de entrada da aplicação, inclusão dos roteadores e gerenciamento do ciclo de vida.
 
-
-
-Fase 3: Ciclo de Vida e Inicialização Otimizada (Lifespan)
+## Fase 3: Ciclo de Vida e Inicialização Otimizada (Lifespan)
 O arquivo serializado do modelo deve ser carregado na memória RAM uma única vez na inicialização da aplicação (utilizando @asynccontextmanager com lifespan do FastAPI).
 Proibição Técnica: É terminantemente proibido ler o disco ou recarregar o arquivo .joblib/.pkl dentro da função da rota de predição a cada requisição HTTP recebida.
 
