@@ -5,7 +5,7 @@ Projeto Avaliativo Final - Módulo 2
 Este notebook guiará o desenvolvimento, modularização e documentação de uma API Web completa utilizando FastAPI para disponibilizar um modelo preditivo treinado.
 
 ## Escolha do Modelo e Dataset
-Para garantir que a validação via Pydantic e os endpoints da API funcionem de forma clara, e de acordo com interesses pessoais, escolhi o dataset "Estimation of Obesity Levels Based on Eating Habits and Physical Condition".
+Para garantir que a validação via Pydantic e os endpoints da API funcionem de forma clara, e de acordo com interesses pessoais, escolhi o dataset "Estimation of Obesity Levels Based on Eating Habits and Physical Condition" do repositório UCI.
 
 ### Dataset: 
 "Estimation of Obesity Levels Based on Eating Habits and Physical Condition". Utilizando uma estratégia de filtragem para o público feminino 40+
