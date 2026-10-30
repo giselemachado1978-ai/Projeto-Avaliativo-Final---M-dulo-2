@@ -1,33 +1,60 @@
 # Projeto-Avaliativo-Final---M-dulo-2
 Projeto Avaliativo Final - Módulo 2
 
-**Nome e Resumo do Projeto: 
-Qual problema de negócio o modelo preditivo resolve.
-Origem do Modelo: Indicar qual dos 3 projetos anteriores foi aproveitado ou descrever a base utilizada para o projeto próprio.
-Tecnologias Utilizadas: Listar bibliotecas e versões (FastAPI, Pydantic, Scikit-Learn, Uvicorn, etc.).
-Instruções de Instalação e Execução: Comandos para criação de ambiente virtual (venv), instalação do requirements.txt e inicialização do servidor com Uvicorn.
-Documentação da API: Exemplos de payloads JSON para chamada do endpoint /predict e link da documentação Swagger (/docs).
-Links das Evidências: Link do vídeo no Google Drive.**
+### Projeto: Classificação de Niveis de Obesidade para Mulheres 40+
+Este notebook guiará o desenvolvimento, modularização e documentação de uma API Web completa utilizando FastAPI para disponibilizar um modelo preditivo treinado.
 
-Objetivo: Projeto Avaliativo Final - Módulo 2
-Disponibilizar um modelo preditivo treinado como uma API REST pronta para consumo por aplicações externas.
+## Escolha do Modelo e Dataset
+Para garantir que a validação via Pydantic e os endpoints da API funcionem de forma clara, e de acordo com interesses pessoais, escolhi o dataset "Estimation of Obesity Levels Based on Eating Habits and Physical Condition".
 
-Modelo escolhido (Kaggle):
- Construir, modularizar e documentar uma API Web completa com FastAPI, implementando endpoints padronizados de monitoramento de saúde (/health) e de inferência sob demanda (/predict ou /v1/predict), com esquemas de entrada e saída validados via Pydantic e ciclo de vida otimizado.
+# Dataset: "Estimation of Obesity Levels Based on Eating Habits and Physical Condition". Utilizando uma estratégia de filtragem para o público feminino 40+
 
- O trabalho se apresenta conforme as etapas abaixo:
+# Objetivo: Classificar o nível de obesidade de um indivíduo (peso insuficiente, peso normal, sobrepeso, obesidade I, II ou III).
 
- Fase 1: Preparação e Serialização do Modelo (Pipeline Offline)
-Treinar (ou refinar) o modelo preditivo escolhido, garantindo a divisão entre dados de treino, validação e teste e os devidos tratamentos de pré-processamento (imputação de nulos, codificação categórica e escalonamento).
-Serialização do Artefato: Salvar o pipeline ou modelo treinado em um arquivo binário dedicado (ex.: .joblib ou .pkl) dentro de uma pasta apropriada do projeto (ex.: models/) ou usar um banco de dados sqlite, como explorado em aula ou ainda uma ferramenta mais apropriada e robusta como o MLflow.
-Relatório de Métricas: Apresentar em documentação ou script auxiliar as métricas alcançadas pelo modelo selecionado (Acurácia, F1-Score, ROC-AUC, MSE/R² dependendo do tipo de problema).
+# Variáveis de Entrada: Hábitos alimentares (consumo de vegetais, número de refeições, ingestão de água) e condição física (atividade física, tempo de uso de telas, idade, histórico familiar).
 
-Fase 2: Estrutura Modular da API FastAPI
+# Vantagem para a API: Excelente para criar uma API de recomendação de saúde ou estilo de vida, exigindo uma validação bem rica com Pydantic para strings, números e enums (como frequências de hábitos).
+
+## Tecnologias Utilizadas: 
+Version: 1.144.0 (user setup)
+Commit: 2c33b50b16c472efe58357d1d2a8a5414bc23fbf
+Date: 2026-10-27T20:18:03Z
+Electron: 43.8.3
+ElectronBuildId: 15784459
+Chromium: 150.0.7871.250
+Node.js: 24.22.1
+V8: 15.0.245.31-electron.0
+@github/copilot: 1.0.103.r40031404408.gba6c003
+@github/copilot-sdk: 1.0.27.40031404408.gba6c003
+OS: Windows_NT x64 10.0.19045
+
+Python 3.14.7
+
+Clone github https://github.com/giselemachado1978-ai/Projeto-Avaliativo-Final---M-dulo-2
+
+Venv criado pela barra " quick access" no vscode
+
+Bibliotecas do arquivo "requirements.txt" instaladas via Terminal com comando pip install
+
+### Pipeline construído por etapas conforme sequência abaixo:
+
+## Fase 1: Preparação e Serialização do Modelo (Pipeline Offline)
+
+-Download via urllib do dataset no repositório UCI e descompactação para uso.
+-Treino do modelo preditivo escolhido, garantindo a divisão entre dados de treino, validação e teste e os devidos tratamentos de pré-processamento (imputação de nulos, codificação categórica e escalonamento).
+-Serialização do Artefato: pipeline salvo em um arquivo binário dedicado (joblib) dentro de uma pasta apropriada do projeto 
+- Relatório de Métricas
+
+## Fase 2: Estrutura Modular da API FastAPI
+Criação dos arquivos Python que compõem a arquitetura em camadas da aplicação Web
+
 A aplicação não pode ser um arquivo único com todo o código misturado. Deve seguir uma arquitetura em camadas:
 schemas/ ou schemas.py: Definição de modelos Pydantic (BaseModel, Field) para validação estrita do JSON recebido no corpo da requisição e do JSON retornado.
 services/ ou services.py: Módulo responsável por carregar o modelo serializado e executar a inferência matemática, desacoplando regras de negócio do protocolo HTTP.
 routers/ ou routers.py: Módulos de rota usando APIRouter agrupando os endpoints de negócio.
 main.py: Ponto de entrada da aplicação, inclusão dos roteadores e gerenciamento do ciclo de vida.
+
+
 
 Fase 3: Ciclo de Vida e Inicialização Otimizada (Lifespan)
 O arquivo serializado do modelo deve ser carregado na memória RAM uma única vez na inicialização da aplicação (utilizando @asynccontextmanager com lifespan do FastAPI).
@@ -43,3 +70,6 @@ Endpoint de Monitoramento (GET /health): Rota de checagem de integridade operaci
 Endpoint de Inferência (POST /predict ou /v1/predict): Rota que consome o esquema de entrada validado, invoca a camada de serviço/inferência e retorna a predição no formato do esquema de saída configurado com status HTTP 200 OK.
 Semântica e Tratamento de Exceções HTTP: Mapear e retornar status codes apropriados (200 OK, 400 Bad Request, 422 Unprocessable Entity ou 500 Internal Server Error), evitando que a API caia (crash) ou retorne erros sem tratamento ao usuário.
  
+inicialização do servidor com Uvicorn.
+Documentação da API: Exemplos de payloads JSON para chamada do endpoint /predict e link da documentação Swagger (/docs).
+Links das Evidências: Link do vídeo no Google Drive.**
