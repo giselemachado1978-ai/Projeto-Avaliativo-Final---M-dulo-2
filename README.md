@@ -70,10 +70,10 @@ OBS.: É terminantemente proibido ler o disco ou recarregar o arquivo .joblib/.p
 -Prevenção de Dados Inválidos: Garantir que o envio de tipos incorretos (ex.: texto em campos numéricos ou valores fora dos limites) seja interceptado automaticamente pelo Pydantic, gerando respostas com status HTTP 422 Unprocessable Entity antes de repassar os dados para o modelo preditivo.
 
 ## Fase 5: Implementação de Endpoints e Tratamento de Erros (FastAPI & HTTP)
-Endpoint de Monitoramento (GET /health): Rota de checagem de integridade operacional que deve responder com status HTTP 200 OK, informando se o serviço está ativo e se o modelo de Machine Learning reside corretamente na memória RAM.
-Endpoint de Inferência (POST /predict ou /v1/predict): Rota que consome o esquema de entrada validado, invoca a camada de serviço/inferência e retorna a predição no formato do esquema de saída configurado com status HTTP 200 OK.
-Semântica e Tratamento de Exceções HTTP: Mapear e retornar status codes apropriados (200 OK, 400 Bad Request, 422 Unprocessable Entity ou 500 Internal Server Error), evitando que a API caia (crash) ou retorne erros sem tratamento ao usuário.
+Demonstrando o uso do TestClient para simular requisições HTTP reais nos endpoints /api/v1/health e /api/v1/predict:
+
+* Endpoint de Monitoramento (GET /health): Rota de checagem de integridade operacional que responde com status HTTP 200 OK, informando se o serviço está ativo e se o modelo de Machine Learning reside corretamente na memória RAM.
+* Endpoint de Inferência (POST /predict ou /v1/predict): Rota que consome o esquema de entrada validado, invoca a camada de serviço/inferência e retorna a predição no formato do esquema de saída configurado com status HTTP 200 OK.
+* Semântica e Tratamento de Exceções HTTP: Mapeamento com retorne de status codes apropriados (200 OK, 400 Bad Request, 422 Unprocessable Entity ou 500 Internal Server Error), evitando que a API caia (crash) ou retorne erros sem tratamento ao usuário.
  
-inicialização do servidor com Uvicorn.
-Documentação da API: Exemplos de payloads JSON para chamada do endpoint /predict e link da documentação Swagger (/docs).
-Links das Evidências: Link do vídeo no Google Drive.**
+# Links das Evidências: Link do vídeo no Google Drive.**
