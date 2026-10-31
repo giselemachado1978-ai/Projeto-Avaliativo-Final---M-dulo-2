@@ -78,3 +78,4 @@ Demonstrando o uso do TestClient para simular requisições HTTP reais nos endpo
 * Semântica e Tratamento de Exceções HTTP: Mapeamento com retorne de status codes apropriados (200 OK, 400 Bad Request, 422 Unprocessable Entity ou 500 Internal Server Error), evitando que a API caia (crash) ou retorne erros sem tratamento ao usuário.
  
 # Link do vídeo no Google Drive: 
+https://drive.google.com/file/d/1tGtE88HWbA2-20Dngr-LLglMJ0NbnkPA/view?usp=sharing
